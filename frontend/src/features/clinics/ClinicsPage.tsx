@@ -8,9 +8,9 @@ import "leaflet/dist/leaflet.css";
 
 // Mock clinics for when API is unavailable
 const mockClinics: Clinic[] = [
-  { id: 1, name: "Clínica VetAmor", phone: "+57 301 111 2222", address: "Cra 15 #80-12, Bogotá", latitude: 4.6697, longitude: -74.0568 },
-  { id: 2, name: "Centro Veterinario PetSalud", phone: "+57 302 333 4444", address: "Cll 100 #19-54, Bogotá", latitude: 4.6836, longitude: -74.0433 },
-  { id: 3, name: "Hospital Animal Vida", phone: "+57 303 555 6666", address: "Cra 7 #45-23, Bogotá", latitude: 4.6351, longitude: -74.0703 },
+  { id: 1, name: "Clínica Veterinaria Quito Sur", phone: "+593 2 265 1234", address: "Av. Mariscal Sucre S14-72, Quito", latitude: -0.2295, longitude: -78.5243 },
+  { id: 2, name: "Centro Veterinario Guayaquil", phone: "+593 4 230 5678", address: "Av. 9 de Octubre 1210, Guayaquil", latitude: -2.1894, longitude: -79.8891 },
+  { id: 3, name: "Hospital Animal Cuenca", phone: "+593 7 284 9012", address: "Calle Larga 6-78, Cuenca", latitude: -2.9001, longitude: -79.0059 },
 ];
 
 const ClinicsPage = () => {
@@ -23,43 +23,50 @@ const ClinicsPage = () => {
   useEffect(() => {
     clinicService
       .getClinics()
-      .then(setClinics)
+      .then((data) => setClinics(data.length > 0 ? data : mockClinics))
       .catch(() => setClinics(mockClinics))
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
-    if (!mapRef.current || clinics.length === 0 || mapInstanceRef.current) return;
+    if (loading || !mapRef.current || mapInstanceRef.current) return;
 
     const initMap = async () => {
-      const L = await import("leaflet");
+      try {
+        const L = await import("leaflet");
 
-      // Fix default marker icons
-      delete (L.Icon.Default.prototype as any)._getIconUrl;
-      L.Icon.Default.mergeOptions({
-        iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-        iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-      });
+        // Fix default marker icons
+        delete (L.Icon.Default.prototype as any)._getIconUrl;
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+          iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+          shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+        });
 
-      const map = L.map(mapRef.current!).setView([4.6597, -74.0568], 12);
-      mapInstanceRef.current = map;
+        const map = L.map(mapRef.current!).setView([-1.8312, -78.1834], 7);
+        mapInstanceRef.current = map;
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(map);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(map);
 
-      clinics.forEach((clinic) => {
-        L.marker([clinic.latitude, clinic.longitude])
-          .addTo(map)
-          .bindPopup(
-            `<div style="font-family: 'DM Sans', sans-serif;">
-              <strong style="font-size: 14px;">${clinic.name}</strong><br/>
-              <span style="color: #666; font-size: 12px;">📞 ${clinic.phone}</span><br/>
-              <span style="color: #666; font-size: 12px;">📍 ${clinic.address}</span>
-            </div>`
-          );
-      });
+        clinics.forEach((clinic) => {
+          L.marker([clinic.latitude, clinic.longitude])
+            .addTo(map)
+            .bindPopup(
+              `<div style="font-family: 'DM Sans', sans-serif;">
+                <strong style="font-size: 14px;">${clinic.name}</strong><br/>
+                <span style="color: #666; font-size: 12px;">Tel: ${clinic.phone}</span><br/>
+                <span style="color: #666; font-size: 12px;">${clinic.address}</span>
+              </div>`
+            );
+        });
+
+        // Force a resize so tiles render correctly
+        setTimeout(() => map.invalidateSize(), 200);
+      } catch (err) {
+        setError("Error al cargar el mapa.");
+      }
     };
 
     initMap();
@@ -70,10 +77,9 @@ const ClinicsPage = () => {
         mapInstanceRef.current = null;
       }
     };
-  }, [clinics]);
+  }, [loading, clinics]);
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <ErrorMessage message={error} />;
 
   return (
     <div className="section-container py-12">
@@ -90,6 +96,12 @@ const ClinicsPage = () => {
         </p>
       </motion.div>
 
+      {error && (
+        <div className="mt-6">
+          <ErrorMessage message={error} />
+        </div>
+      )}
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -97,7 +109,10 @@ const ClinicsPage = () => {
         className="mt-10 overflow-hidden rounded-2xl border border-border"
         style={{ boxShadow: "var(--card-shadow)" }}
       >
-        <div ref={mapRef} className="h-[500px] w-full" />
+        <div
+          ref={mapRef}
+          style={{ height: "500px", width: "100%", minHeight: "400px" }}
+        />
       </motion.div>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

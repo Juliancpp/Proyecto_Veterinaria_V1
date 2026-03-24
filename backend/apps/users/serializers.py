@@ -11,11 +11,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'email', 'password', 'role')
+        fields = ('id', 'name', 'email', 'password')
         read_only_fields = ('id',)
-        extra_kwargs = {
-            'role': {'required': False},
-        }
 
     def create(self, validated_data):
         from apps.users.services import UserService

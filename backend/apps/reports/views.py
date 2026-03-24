@@ -28,8 +28,12 @@ class ReportViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    def perform_update(self, serializer):
-        ReportService.update_status(
-            report=self.get_object(),
+    def partial_update(self, request, *args, **kwargs):
+        report = self.get_object()
+        serializer = self.get_serializer(report, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        updated = ReportService.update_status(
+            report=report,
             new_status=serializer.validated_data['status'],
         )
+        return Response(ReportSerializer(updated, context={'request': request}).data)

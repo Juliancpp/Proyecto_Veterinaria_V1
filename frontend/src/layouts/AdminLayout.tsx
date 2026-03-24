@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, PawPrint, FileText, Hospital, Users, Shield, LogOut, Heart } from "lucide-react";
+import { LayoutDashboard, PawPrint, FileText, Hospital, Users, Shield, LogOut, Heart, HeartHandshake } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import {
   Sidebar,
@@ -18,6 +18,7 @@ import { NavLink } from "@/components/NavLink";
 const adminLinks = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { to: "/admin/pets", label: "Mascotas", icon: PawPrint },
+  { to: "/admin/adoptions", label: "Adopciones", icon: HeartHandshake },
   { to: "/admin/reports", label: "Reportes", icon: FileText },
   { to: "/admin/clinics", label: "Clínicas", icon: Hospital },
   { to: "/admin/users", label: "Usuarios", icon: Users },

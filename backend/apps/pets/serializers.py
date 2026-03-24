@@ -9,7 +9,7 @@ class PetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pet
         fields = (
-            'id', 'name', 'age', 'breed', 'description', 'image',
+            'id', 'name', 'age', 'breed', 'size', 'description', 'image',
             'status', 'created_at', 'updated_at',
         )
         read_only_fields = ('id', 'created_at', 'updated_at')
@@ -28,7 +28,7 @@ class PetCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pet
-        fields = ('id', 'name', 'age', 'breed', 'description', 'image', 'status')
+        fields = ('id', 'name', 'age', 'breed', 'size', 'description', 'image', 'status')
         read_only_fields = ('id',)
 
 
@@ -37,3 +37,21 @@ class PetInteractionSerializer(serializers.ModelSerializer):
         model = PetInteraction
         fields = ('id', 'user', 'pet', 'liked', 'created_at')
         read_only_fields = ('id', 'user', 'pet', 'liked', 'created_at')
+
+
+class LikedPetSerializer(serializers.ModelSerializer):
+    """Serializer for the /api/likes/ endpoint — returns pet + adoption status."""
+    pet = PetSerializer(read_only=True)
+    adoption_status = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PetInteraction
+        fields = ('id', 'pet', 'liked', 'created_at', 'adoption_status')
+
+    def get_adoption_status(self, obj):
+        from apps.adoptions.models import AdoptionRequest
+        try:
+            req = AdoptionRequest.objects.get(user=obj.user, pet=obj.pet)
+            return req.status
+        except AdoptionRequest.DoesNotExist:
+            return None

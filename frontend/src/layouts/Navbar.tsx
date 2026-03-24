@@ -11,10 +11,16 @@ const navLinks = [
   { to: "/clinics", label: "Clínicas" },
 ];
 
+const getDashboardPath = (role?: string) => {
+  if (role === "admin") return "/admin";
+  if (role === "staff") return "/staff/pets";
+  return "/app/pets";
+};
+
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, user, logout } = useAuthStore();
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-lg">
@@ -40,12 +46,20 @@ export const Navbar = () => {
             </Link>
           ))}
           {isAuthenticated ? (
-            <button
-              onClick={logout}
-              className="ml-2 flex items-center gap-2 rounded-full bg-muted px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <LogOut className="h-4 w-4" /> Salir
-            </button>
+            <>
+              <Link
+                to={getDashboardPath(user?.role)}
+                className="ml-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+              >
+                Mi Panel
+              </Link>
+              <button
+                onClick={logout}
+                className="ml-2 flex items-center gap-2 rounded-full bg-muted px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <LogOut className="h-4 w-4" /> Salir
+              </button>
+            </>
           ) : (
             <Link to="/login" className="btn-hero ml-2 !px-6 !py-2 !text-sm">
               Iniciar Sesión
@@ -83,9 +97,18 @@ export const Navbar = () => {
                 </Link>
               ))}
               {isAuthenticated ? (
-                <button onClick={() => { logout(); setOpen(false); }} className="rounded-lg px-4 py-3 text-left text-sm font-medium text-muted-foreground">
-                  Cerrar sesión
-                </button>
+                <>
+                  <Link
+                    to={getDashboardPath(user?.role)}
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg px-4 py-3 text-sm font-medium text-primary"
+                  >
+                    Mi Panel
+                  </Link>
+                  <button onClick={() => { logout(); setOpen(false); }} className="rounded-lg px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+                    Cerrar sesión
+                  </button>
+                </>
               ) : (
                 <Link to="/login" onClick={() => setOpen(false)} className="btn-hero mt-2 text-center !text-sm">
                   Iniciar Sesión

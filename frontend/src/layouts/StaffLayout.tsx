@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import { PawPrint, FileText, LogOut, Heart } from "lucide-react";
+import { PawPrint, FileText, LogOut, Heart, HeartHandshake } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import {
   Sidebar,
@@ -17,6 +17,7 @@ import { NavLink } from "@/components/NavLink";
 
 const staffLinks = [
   { to: "/staff/pets", label: "Mascotas", icon: PawPrint },
+  { to: "/staff/adoptions", label: "Adopciones", icon: HeartHandshake },
   { to: "/staff/reports", label: "Reportes", icon: FileText },
 ];
 

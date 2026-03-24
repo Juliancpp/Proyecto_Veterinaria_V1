@@ -8,6 +8,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from apps.pets.views import LikedPetsView
 from apps.users.urls import auth_urlpatterns, users_urlpatterns
 
 # ────────────────────────── Swagger schema ────────────────────────────────
@@ -37,6 +38,8 @@ urlpatterns = [
     path('api/reports/', include('apps.reports.urls')),
     path('api/clinics/', include('apps.clinics.urls')),
     path('api/onboarding/', include('apps.onboarding.urls')),
+    path('api/adoptions/', include('apps.adoptions.urls')),
+    path('api/likes/', LikedPetsView.as_view(), name='liked-pets'),
 ]
 
 # Serve media files in development

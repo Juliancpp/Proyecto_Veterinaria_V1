@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useAuthStore } from "@/store/authStore";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,12 @@ const RegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const ok = await register({ name, email, password });
-    if (ok) navigate("/onboarding");
+    if (ok) {
+      const user = useAuthStore.getState().user;
+      if (user?.role === "admin") navigate("/admin");
+      else if (user?.role === "staff") navigate("/staff/pets");
+      else navigate("/onboarding");
+    }
   };
 
   return (

@@ -5,8 +5,10 @@ export interface Pet {
   name: string;
   age: string;
   breed: string;
+  size: string;
   description: string;
   image: string;
+  status?: string;
 }
 
 interface PetState {

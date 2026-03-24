@@ -15,6 +15,7 @@ import LoginPage from "@/features/auth/LoginPage";
 import RegisterPage from "@/features/auth/RegisterPage";
 import OnboardingPage from "@/features/onboarding/OnboardingPage";
 import AdoptionPage from "@/features/adoption/AdoptionPage";
+import LikesPage from "@/features/likes/LikesPage";
 import ReportPage from "@/features/report/ReportPage";
 import ClinicsPage from "@/features/clinics/ClinicsPage";
 import ProfilePage from "@/features/profile/ProfilePage";
@@ -25,9 +26,11 @@ import AdminReports from "@/features/admin/AdminReports";
 import AdminClinics from "@/features/admin/AdminClinics";
 import AdminUsers from "@/features/admin/AdminUsers";
 import AdminStaff from "@/features/admin/AdminStaff";
+import AdminAdoptions from "@/features/admin/AdminAdoptions";
 
 import StaffPets from "@/features/staff/StaffPets";
 import StaffReports from "@/features/staff/StaffReports";
+import StaffAdoptions from "@/features/staff/StaffAdoptions";
 
 import NotFound from "./pages/NotFound";
 
@@ -47,13 +50,14 @@ const App = () => (
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/onboarding" element={
-              <ProtectedRoute><OnboardingPage /></ProtectedRoute>
+              <ProtectedRoute allowedRoles={["user"]}><OnboardingPage /></ProtectedRoute>
             } />
           </Route>
 
           {/* User routes with sidebar layout */}
-          <Route element={<ProtectedRoute><UserLayout /></ProtectedRoute>}>
+          <Route element={<ProtectedRoute allowedRoles={["user"]}><UserLayout /></ProtectedRoute>}>
             <Route path="/app/pets" element={<AdoptionPage />} />
+            <Route path="/app/likes" element={<LikesPage />} />
             <Route path="/app/report" element={<ReportPage />} />
             <Route path="/app/clinics" element={<ClinicsPage />} />
             <Route path="/app/profile" element={<ProfilePage />} />
@@ -67,6 +71,7 @@ const App = () => (
           <Route element={<ProtectedRoute allowedRoles={["admin"]}><AdminLayout /></ProtectedRoute>}>
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/pets" element={<AdminPets />} />
+            <Route path="/admin/adoptions" element={<AdminAdoptions />} />
             <Route path="/admin/reports" element={<AdminReports />} />
             <Route path="/admin/clinics" element={<AdminClinics />} />
             <Route path="/admin/users" element={<AdminUsers />} />
@@ -77,6 +82,7 @@ const App = () => (
           <Route element={<ProtectedRoute allowedRoles={["staff", "admin"]}><StaffLayout /></ProtectedRoute>}>
             <Route path="/staff/pets" element={<StaffPets />} />
             <Route path="/staff/reports" element={<StaffReports />} />
+            <Route path="/staff/adoptions" element={<StaffAdoptions />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

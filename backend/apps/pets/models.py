@@ -9,9 +9,19 @@ class Pet(models.Model):
         AVAILABLE = 'available', 'Available'
         ADOPTED = 'adopted', 'Adopted'
 
+    class Size(models.TextChoices):
+        SMALL = 'small', 'Pequeño'
+        MEDIUM = 'medium', 'Mediano'
+        LARGE = 'large', 'Grande'
+
     name = models.CharField(max_length=255)
     age = models.CharField(max_length=50, help_text='e.g. "2 años"')
     breed = models.CharField(max_length=100, blank=True, default='Mestiza')
+    size = models.CharField(
+        max_length=10,
+        choices=Size.choices,
+        default=Size.MEDIUM,
+    )
     description = models.TextField(blank=True, default='')
     image = models.ImageField(upload_to='pets/', blank=True, null=True)
     status = models.CharField(

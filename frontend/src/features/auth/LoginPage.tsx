@@ -16,9 +16,9 @@ const LoginPage = () => {
     const success = await login({ email, password });
     if (success) {
       const user = useAuthStore.getState().user;
-      if (!user?.onboarding_complete) navigate("/onboarding");
-      else if (user.role === "admin") navigate("/admin");
-      else if (user.role === "staff") navigate("/staff/pets");
+      if (user?.role === "admin") navigate("/admin");
+      else if (user?.role === "staff") navigate("/staff/pets");
+      else if (!user?.onboarding_complete) navigate("/onboarding");
       else navigate("/app/pets");
     }
   };

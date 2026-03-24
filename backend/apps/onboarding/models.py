@@ -11,6 +11,14 @@ class Onboarding(models.Model):
         related_name='onboarding',
     )
     preferences = models.JSONField(default=dict, blank=True)
+    answers = models.JSONField(
+        default=dict, blank=True,
+        help_text='Structured questionnaire answers from the onboarding form.',
+    )
+    score = models.IntegerField(
+        default=0,
+        help_text='Computed adopter score based on questionnaire answers.',
+    )
     completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

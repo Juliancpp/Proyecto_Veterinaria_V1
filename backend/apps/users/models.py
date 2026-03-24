@@ -33,6 +33,13 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+    def save(self, *args, **kwargs):
+        # Keep Django's is_staff / is_superuser in sync with our role field
+        # so that admin-panel access and built-in permission checks work.
+        self.is_staff = self.role in (self.Role.STAFF, self.Role.ADMIN)
+        self.is_superuser = self.role == self.Role.ADMIN
+        super().save(*args, **kwargs)
+
     # --------------- convenience helpers ---------------
     @property
     def is_admin(self):

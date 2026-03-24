@@ -24,9 +24,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: JSON.parse(localStorage.getItem("user") || "null"),
   isAuthenticated: !!localStorage.getItem("token"),
   setAuth: (token, user) => {
+    // Normalize role to lowercase to handle backend inconsistencies
+    const normalizedUser = { ...user, role: (user.role?.toLowerCase() || "user") as AppRole };
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
-    set({ token, user, isAuthenticated: true });
+    localStorage.setItem("user", JSON.stringify(normalizedUser));
+    set({ token, user: normalizedUser, isAuthenticated: true });
   },
   updateUser: (partial) => {
     const current = get().user;

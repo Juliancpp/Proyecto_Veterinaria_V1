@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'apps.reports',
     'apps.clinics',
     'apps.onboarding',
+    'apps.adoptions',
 ]
 
 # ─────────────────────────── middleware ────────────────────────────────────

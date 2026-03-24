@@ -1,11 +1,16 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, permissions, status, viewsets
+from rest_framework import filters, generics, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from apps.pets.models import Pet
+from apps.pets.models import Pet, PetInteraction
 from apps.pets.permissions import IsStaffOrAdminOrReadOnly
-from apps.pets.serializers import PetCreateSerializer, PetInteractionSerializer, PetSerializer
+from apps.pets.serializers import (
+    LikedPetSerializer,
+    PetCreateSerializer,
+    PetInteractionSerializer,
+    PetSerializer,
+)
 from apps.pets.services import PetService
 
 
@@ -60,3 +65,16 @@ class PetViewSet(viewsets.ModelViewSet):
         pet = self.get_object()
         interaction = PetService.interact(user=request.user, pet=pet, liked=False)
         return Response(PetInteractionSerializer(interaction).data, status=status.HTTP_201_CREATED)
+
+
+class LikedPetsView(generics.ListAPIView):
+    """GET /api/likes/ — Returns all pets liked by the authenticated user."""
+
+    serializer_class = LikedPetSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+
+    def get_queryset(self):
+        return PetInteraction.objects.filter(
+            user=self.request.user, liked=True
+        ).select_related('pet', 'user')
