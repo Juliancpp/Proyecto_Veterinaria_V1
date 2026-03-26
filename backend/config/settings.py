@@ -18,6 +18,10 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
+# ──────────────────────────── deployment ────────────────────────────────
+# Set DEBUG=False in production .env
+# Set ALLOWED_HOSTS=demotb.vitusproject.com,localhost,127.0.0.1 in .env
+
 # ──────────────────────────── applications ────────────────────────────────
 INSTALLED_APPS = [
     # Django
@@ -122,8 +126,18 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# ──────────────────────────── CORS ────────────────────────────────────────
-CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)
+# ──────────────────────────── CORS & CSRF ─────────────────────────────────
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
+CORS_ALLOWED_ORIGINS = config(
+    'CORS_ALLOWED_ORIGINS',
+    default='https://demotb.virtusproject.com',
+    cast=Csv(),
+)
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='https://demotb.virtusproject.com',
+    cast=Csv(),
+)
 
 # ──────────────────────── i18n / timezone ─────────────────────────────────
 LANGUAGE_CODE = 'en-us'
@@ -132,7 +146,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ─────────────────────── static & media ───────────────────────────────────
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
@@ -140,6 +154,33 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # ─────────────────────── default pk type ──────────────────────────────────
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ──────────────────────── HTTPS / security ───────────────────────────────
+# These settings are active only when DEBUG=False (production).
+if not DEBUG:
+    # Cookies only sent over HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # Redirect all HTTP requests to HTTPS
+    SECURE_SSL_REDIRECT = True
+
+    # Trust the X-Forwarded-Proto header from reverse proxies (CloudFront, nginx, etc.)
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # HSTS — tell browsers to always use HTTPS (1 year)
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # Prevent clickjacking
+    X_FRAME_OPTIONS = 'DENY'
+
+    # Prevent MIME-type sniffing
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # Enable browser XSS filter
+    SECURE_BROWSER_XSS_FILTER = True
 
 # ─────────────────────────── swagger ──────────────────────────────────────
 SWAGGER_SETTINGS = {
