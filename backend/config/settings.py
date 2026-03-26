@@ -20,7 +20,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv(
 
 # ──────────────────────────── deployment ────────────────────────────────
 # Set DEBUG=False in production .env
-# Set ALLOWED_HOSTS=demotb.vitusproject.com,localhost,127.0.0.1 in .env
+# Set ALLOWED_HOSTS=yourdomain.com,localhost,127.0.0.1 in .env
 
 # ──────────────────────────── applications ────────────────────────────────
 INSTALLED_APPS = [
@@ -130,12 +130,12 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
-    default='https://demotb.virtusproject.com',
+    default='http://localhost:8080',
     cast=Csv(),
 )
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
-    default='https://demotb.virtusproject.com',
+    default='http://localhost:8080',
     cast=Csv(),
 )
 
