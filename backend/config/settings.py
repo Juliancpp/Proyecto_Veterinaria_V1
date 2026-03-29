@@ -8,6 +8,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from corsheaders.defaults import default_headers
 from decouple import Csv, config
 
 # ──────────────────────────────── paths ───────────────────────────────────
@@ -139,6 +140,25 @@ CSRF_TRUSTED_ORIGINS = config(
     cast=Csv(),
 )
 
+# Allow credentials (cookies, authorization headers)
+CORS_ALLOW_CREDENTIALS = True
+
+# Allowed headers (includes defaults + authorization + content-type)
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'authorization',
+    'content-type',
+]
+
+# Allowed HTTP methods
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
+
 # ──────────────────────── i18n / timezone ─────────────────────────────────
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -156,30 +176,27 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ──────────────────────── HTTPS / security ───────────────────────────────
-# These settings are active only when DEBUG=False (production).
-if not DEBUG:
-    # Cookies only sent over HTTPS
+# SSL is DISABLED by default. Set USE_SSL=True in .env ONLY after
+# configuring a valid SSL certificate (e.g. via Let's Encrypt).
+USE_SSL = config('USE_SSL', default=False, cast=bool)
+
+if USE_SSL:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-
-    # Redirect all HTTP requests to HTTPS
     SECURE_SSL_REDIRECT = True
-
-    # Trust the X-Forwarded-Proto header from reverse proxies (CloudFront, nginx, etc.)
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-    # HSTS — tell browsers to always use HTTPS (1 year)
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+else:
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
 
-    # Prevent clickjacking
+# Non-SSL security headers (always active in production)
+if not DEBUG:
     X_FRAME_OPTIONS = 'DENY'
-
-    # Prevent MIME-type sniffing
     SECURE_CONTENT_TYPE_NOSNIFF = True
-
-    # Enable browser XSS filter
     SECURE_BROWSER_XSS_FILTER = True
 
 # ─────────────────────────── swagger ──────────────────────────────────────

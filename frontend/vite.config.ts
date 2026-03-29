@@ -13,11 +13,11 @@ export default defineConfig(({ mode }) => ({
     },
     proxy: {
       "/api": {
-        target: "http://localhost:8000",
+        target: "http://52.34.119.16",
         changeOrigin: true,
       },
       "/media": {
-        target: "http://localhost:8000",
+        target: "http://52.34.119.16",
         changeOrigin: true,
       },
     },
