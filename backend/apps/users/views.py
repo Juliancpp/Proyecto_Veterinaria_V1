@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, get_user_model
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -24,7 +25,13 @@ class RegisterView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+
+        try:
+            user = serializer.save()
+        except DjangoValidationError as e:
+            # Convert Django ValidationError to a DRF-friendly response
+            errors = e.message_dict if hasattr(e, 'message_dict') else {'detail': e.messages}
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
         refresh = RefreshToken.for_user(user)
         return Response(

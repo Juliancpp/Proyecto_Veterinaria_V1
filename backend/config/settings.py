@@ -8,7 +8,6 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-from corsheaders.defaults import default_headers
 from decouple import Csv, config
 
 # ──────────────────────────────── paths ───────────────────────────────────
@@ -143,10 +142,17 @@ CSRF_TRUSTED_ORIGINS = config(
 # Allow credentials (cookies, authorization headers)
 CORS_ALLOW_CREDENTIALS = True
 
-# Allowed headers (includes defaults + authorization + content-type)
-CORS_ALLOW_HEADERS = list(default_headers) + [
+# Allowed headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
     'authorization',
     'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
 
 # Allowed HTTP methods
@@ -176,15 +182,16 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ──────────────────────── HTTPS / security ───────────────────────────────
-# SSL is DISABLED by default. Set USE_SSL=True in .env ONLY after
-# configuring a valid SSL certificate (e.g. via Let's Encrypt).
+# Nginx termina SSL y reenvía X-Forwarded-Proto; Django necesita esto
+# siempre activo para detectar correctamente HTTPS detrás del proxy.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 USE_SSL = config('USE_SSL', default=False, cast=bool)
 
 if USE_SSL:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True

@@ -30,7 +30,16 @@ export const useAuth = () => {
       setAuth(token, user);
       return true;
     } catch (err: any) {
-      setError(err.response?.data?.detail || "Error al registrarse");
+      const data = err.response?.data;
+      if (data) {
+        // Handle field-level errors: { email: ["already exists"], password: ["too short"] }
+        const messages = typeof data === 'object' && !data.detail
+          ? Object.values(data).flat().join('. ')
+          : data.detail;
+        setError(messages || "Error al registrarse");
+      } else {
+        setError("Error al registrarse");
+      }
       return false;
     } finally {
       setLoading(false);
