@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Heart, Users, PawPrint, Mail, Phone, MapPin } from "lucide-react";
-import heroImg from "@/assets/hero-adoption.jpg";
-import dogSample1 from "@/assets/dog-sample-1.jpg";
-import dogSample2 from "@/assets/dog-sample-2.jpg";
-import dogSample3 from "@/assets/dog-sample-3.jpg";
+import heroImg from "@/assets/Logo.jpg";
+import dogSample1 from "@/assets/Perro1.jpg";
+import dogSample2 from "@/assets/Perro2.jpg";
+import dogSample3 from "@/assets/gato.jpg";
 
 const stats = [
   { icon: PawPrint, value: "1,200+", label: "Mascotas adoptadas" },
@@ -172,9 +172,9 @@ const HomePage = () => {
           </motion.div>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {[
-              { icon: Mail, title: "Email", detail: "info@patitashome.org" },
-              { icon: Phone, title: "Teléfono", detail: "+57 300 123 4567" },
-              { icon: MapPin, title: "Ubicación", detail: "Bogotá, Colombia" },
+              { icon: Mail, title: "Email", detail: "example@email.com" },
+              { icon: Phone, title: "Teléfono", detail: "Introduce tu numero de telefonó aquí" },
+              { icon: MapPin, title: "Ubicación", detail: "xxxxx, Ecuador" },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
