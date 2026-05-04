@@ -1,58 +1,68 @@
+@import "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700;800&display=swap";
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700;800&display=swap";
 
 @layer base {
   :root {
-    --background: 30 25% 97%;
-    --foreground: 20 20% 14%;
+  --background: 48 100% 98%;
+  --foreground: 220 20% 12%;
 
-    --card: 30 20% 99%;
-    --card-foreground: 20 20% 14%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 12%;
 
-    --popover: 30 20% 99%;
-    --popover-foreground: 20 20% 14%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 20% 12%;
 
-    --primary: 24 80% 50%;
-    --primary-foreground: 0 0% 100%;
+  /* Turquesa principal del logo */
+  --primary: 180 65% 38%;
+  --primary-foreground: 0 0% 100%;
 
-    --secondary: 160 40% 45%;
-    --secondary-foreground: 0 0% 100%;
+  /* Morado secundario del logo */
+  --secondary: 274 55% 36%;
+  --secondary-foreground: 0 0% 100%;
 
-    --muted: 30 15% 92%;
-    --muted-foreground: 20 10% 45%;
+  /* Fondo suave */
+  --muted: 48 45% 94%;
+  --muted-foreground: 220 8% 42%;
 
-    --accent: 35 90% 55%;
-    --accent-foreground: 20 20% 14%;
+  /* Amarillo solo como acento */
+  --accent: 50 100% 50%;
+  --accent-foreground: 220 20% 12%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
 
-    --border: 30 15% 88%;
-    --input: 30 15% 88%;
-    --ring: 24 80% 50%;
+  --border: 48 30% 88%;
+  --input: 48 30% 88%;
+  --ring: 180 65% 38%;
 
-    --radius: 0.75rem;
+  --radius: 0.75rem;
 
-    --hero-gradient: linear-gradient(135deg, hsl(24 80% 50%), hsl(35 90% 55%));
-    --warm-overlay: linear-gradient(180deg, hsl(30 25% 97% / 0) 0%, hsl(30 25% 97%) 100%);
-    --card-shadow: 0 4px 24px -4px hsl(20 20% 14% / 0.08);
-    --card-shadow-hover: 0 12px 40px -8px hsl(24 80% 50% / 0.2);
+  /* Gradiente turquesa + morado */
+  --hero-gradient: linear-gradient(135deg, hsl(180 65% 38%), hsl(274 55% 36%));
 
-    --sidebar-background: 30 20% 96%;
-    --sidebar-foreground: 20 10% 30%;
-    --sidebar-primary: 24 80% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 15% 92%;
-    --sidebar-accent-foreground: 20 20% 14%;
-    --sidebar-border: 30 15% 88%;
-    --sidebar-ring: 24 80% 50%;
+  /* Overlay claro */
+  --warm-overlay: linear-gradient(180deg, hsl(48 100% 98% / 0) 0%, hsl(48 100% 98%) 100%);
 
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'DM Sans', sans-serif;
-  }
+  --card-shadow: 0 4px 24px -4px hsl(220 20% 12% / 0.08);
+  --card-shadow-hover: 0 12px 40px -8px hsl(180 65% 38% / 0.22);
+
+  --sidebar-background: 48 45% 96%;
+  --sidebar-foreground: 220 10% 30%;
+  --sidebar-primary: 180 65% 38%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 48 45% 94%;
+  --sidebar-accent-foreground: 220 20% 12%;
+  --sidebar-border: 48 30% 88%;
+  --sidebar-ring: 180 65% 38%;
+
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
 }
 
 @layer base {
@@ -75,12 +85,12 @@
     @apply inline-flex items-center justify-center rounded-full px-8 py-4 text-lg font-semibold transition-all duration-300;
     background: var(--hero-gradient);
     color: hsl(var(--primary-foreground));
-    box-shadow: 0 4px 16px hsl(24 80% 50% / 0.3);
+    box-shadow: 0 4px 16px hsl(180 65% 38% / 0.3);
   }
 
   .btn-hero:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px hsl(24 80% 50% / 0.4);
+    box-shadow: 0 8px 24px hsl(274 55% 36% / 0.35);
   }
 
   .card-pet {

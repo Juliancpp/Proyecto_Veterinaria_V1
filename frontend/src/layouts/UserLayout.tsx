@@ -39,7 +39,7 @@ export const UserLayout = () => {
             <div className="flex items-center gap-2 px-4 py-4">
               <Heart className="h-6 w-6 shrink-0 text-primary" fill="hsl(var(--primary))" />
               <span className="font-display text-lg font-bold text-foreground group-data-[collapsible=icon]:hidden">
-                PatitasHome
+                Por un amigo fiel
               </span>
             </div>
             <SidebarGroup>

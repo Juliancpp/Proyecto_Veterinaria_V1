@@ -7,9 +7,9 @@ import dogSample2 from "@/assets/Perro2.jpg";
 import dogSample3 from "@/assets/gato.jpg";
 
 const stats = [
-  { icon: PawPrint, value: "1,200+", label: "Mascotas adoptadas" },
-  { icon: Users, value: "800+", label: "Familias felices" },
-  { icon: Heart, value: "50+", label: "Voluntarios activos" },
+  { icon: PawPrint, value: "500+", label: "Mascotas adoptadas" },
+  { icon: Users, value: "200+", label: "Familias felices" },
+  { icon: Heart, value: "1000+", label: " perritos y gatitos desparasitados y vitaminizados gratuitamente" },
 ];
 
 const stories = [
@@ -46,7 +46,7 @@ const HomePage = () => {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroImg} alt="Mascotas esperando un hogar" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-foreground/50" />
+          Por un amigo fiel<div className="absolute inset-0 bg-black/70" />
         </div>
         <div className="section-container relative z-10 flex min-h-[85vh] flex-col items-center justify-center text-center">
           <motion.h1
@@ -172,9 +172,9 @@ const HomePage = () => {
           </motion.div>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             {[
-              { icon: Mail, title: "Email", detail: "example@email.com" },
-              { icon: Phone, title: "Teléfono", detail: "Introduce tu numero de telefonó aquí" },
-              { icon: MapPin, title: "Ubicación", detail: "xxxxx, Ecuador" },
+              { icon: Mail, title: "Email", detail: "porunamigofiel.pillaro@gmail.com" },
+              { icon: Phone, title: "Teléfono", detail: "+593 98 718 1329" },
+              { icon: MapPin, title: "Ubicación", detail: "Ambato, Ecuador" },
             ].map((item, i) => (
               <motion.div
                 key={item.title}

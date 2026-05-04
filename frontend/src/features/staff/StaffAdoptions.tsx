@@ -20,7 +20,7 @@ const StaffAdoptions = () => {
   const handleEmail = (email: string, petName: string) => {
     const subject = encodeURIComponent(`Adopción aprobada - ${petName}`);
     const body = encodeURIComponent(
-      `Hola,\n\nTu solicitud de adopción para ${petName} ha sido aprobada.\n\nPor favor contáctanos para coordinar la entrega.\n\nSaludos,\nEquipo PatitasHome`
+      `Hola,\n\nTu solicitud de adopción para ${petName} ha sido aprobada.\n\nPor favor contáctanos para coordinar la entrega.\n\nSaludos,\nEquipo Por un amigo fiel`
     );
     window.open(`mailto:${email}?subject=${subject}&body=${body}`);
   };
