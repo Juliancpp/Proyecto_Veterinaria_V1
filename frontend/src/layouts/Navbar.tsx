@@ -27,7 +27,7 @@ export const Navbar = () => {
       <div className="section-container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <Heart className="h-7 w-7 text-primary" fill="hsl(var(--primary))" />
-          <span className="font-display text-xl font-bold text-foreground">PatitasHome</span>
+          <span className="font-display text-xl font-bold text-foreground">Por un amigo fiel</span>
         </Link>
 
         {/* Desktop nav */}

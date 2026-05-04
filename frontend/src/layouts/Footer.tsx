@@ -8,7 +8,7 @@ export const Footer = () => (
         <div>
           <Link to="/" className="flex items-center gap-2">
             <Heart className="h-6 w-6 text-primary" fill="hsl(var(--primary))" />
-            <span className="font-display text-lg font-bold">PatitasHome</span>
+            <span className="font-display text-lg font-bold">Por un amigo fiel</span>
           </Link>
           <p className="mt-3 text-sm text-muted-foreground">
             Conectando corazones con hogares. Cada mascota merece una segunda oportunidad.
@@ -26,14 +26,14 @@ export const Footer = () => (
         <div>
           <h4 className="font-display text-sm font-semibold text-foreground">Contacto</h4>
           <div className="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
-            <p>📧 info@patitashome.org</p>
-            <p>📞 +57 300 123 4567</p>
-            <p>📍 Bogotá, Colombia</p>
+            <p>📧 porunamigofiel.pillaro@gmail.com</p>
+            <p>📞 +593 98 718 1329</p>
+            <p>📍 Ambato, Ecuador</p>
           </div>
         </div>
       </div>
       <div className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} PatitasHome. Todos los derechos reservados.
+        © {new Date().getFullYear()} Por un amigo fiel. Todos los derechos reservados.
       </div>
     </div>
   </footer>
